@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    >
+
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:textSize="36dp"
+    android:gravity="center"
+    android:paddingBottom="32dp"
+    android:text="AnyUnlock" />
+<Button
+    android:id="@+id/enable_button"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp"
+    android:textSize="24dp"
+    android:text="Enable AnyUnlock" />
+<Button
+    android:id="@+id/disable_button"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp"
+    android:textSize="24dp"
+    android:text="Disable AnyUnlock" />
+</LinearLayout>
+
