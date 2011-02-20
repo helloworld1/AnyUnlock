@@ -8,6 +8,7 @@ import android.os.*;
 import android.util.Log;
 import android.content.*;
 import java.io.*;
+import android.app.admin.DevicePolicyManager;
 
 
 public class AnyUnlockService extends Service{
@@ -17,22 +18,25 @@ public class AnyUnlockService extends Service{
     private KeyguardManager km;
     private KeyguardManager.KeyguardLock kl;
     private BroadcastReceiver mReceiver;
+    private DevicePolicyManager mDPM;
+    private ComponentName mAdminReceiver;
     
     @Override
     public void onCreate(){
         Log.v(TAG, "Service Started!!!!");
-        km = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
-        kl = km.newKeyguardLock("AnyUnlock");
-        kl.disableKeyguard();
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction("android.intent.action.PHONE_STATE");
         mReceiver = new LockScreenReceiver();
         registerReceiver(mReceiver, filter);
+        mDPM = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+        mAdminReceiver = new ComponentName(this, AdminReceiver.class);
     }
 
     public void onDestroy(){
         Log.v(TAG, "Service Destroyed!!!");
+        km = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
+        kl = km.newKeyguardLock("AnyUnlock");
         kl.reenableKeyguard();
         unregisterReceiver(mReceiver);
         super.onDestroy();
@@ -42,11 +46,26 @@ public class AnyUnlockService extends Service{
     public int onStartCommand(Intent intent, int flags, int startId) {
         /* We want this service to continue running until it is explicitly
          stopped, so return sticky.*/
-        if(intent != null && intent.getAction() != null && intent.getAction().equals("anyunlock_lockscreen_intent")){
-            Log.v("Hello", "Service onStartCommand");
-            Intent myIntent = new Intent(this, LockScreen.class);
-            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(myIntent);
+        if(intent != null && intent.getAction() != null){
+            if(intent.getAction().equals("anyunlock_disable_lock_intent")){
+                km = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
+                kl = km.newKeyguardLock("AnyUnlock");
+                kl.disableKeyguard();
+                Log.v("Hello", "Disable lock now");
+                kl.disableKeyguard();
+            } 
+            else if(intent.getAction().equals("anyunlock_lockscreen_intent")){
+                Log.v("Hello", "Service onStartCommand");
+                Intent myIntent = new Intent(this, LockScreen.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myIntent);
+            }
+            else if(intent.getAction().equals("anyunlock_power_off_intent")){
+                if(mDPM.isAdminActive(mAdminReceiver)){
+                    mDPM.lockNow();
+                }
+
+            }
         }
         return START_STICKY;
     }
@@ -63,4 +82,5 @@ public class AnyUnlockService extends Service{
             return super.onTransact(code, data, reply, flags);
         }
     };
+
 }
