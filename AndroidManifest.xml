@@ -30,7 +30,8 @@
         </receiver>
 
         <receiver
-            android:name=".AnyUnlockWidgetProvider" >
+            android:name=".AnyUnlockWidgetProvider" 
+            android:icon="@drawable/off" >
             <intent-filter>
                 <action
                     android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -40,4 +41,5 @@
                     android:resource="@xml/widget_info" />
         </receiver>
     </application>
+    <uses-sdk android:minSdkVersion="8" />
 </manifest> 
