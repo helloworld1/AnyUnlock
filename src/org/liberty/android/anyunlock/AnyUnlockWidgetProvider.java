@@ -39,8 +39,7 @@ public class AnyUnlockWidgetProvider extends AppWidgetProvider{
             RemoteViews updateViews = new RemoteViews(context.getPackageName(), R.layout.widget);
             ComponentName thisWidget = new ComponentName(context, AnyUnlockWidgetProvider.class);
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
-            Intent myIntent = new Intent(context, AnyUnlockService.class);
-            myIntent.setAction("anyunlock_power_off_intent");
+            Intent myIntent = new Intent(context, LockScreenService.class);
             PendingIntent pendingIntent = PendingIntent.getService(context, WIDGET_REQ, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             updateViews.setOnClickPendingIntent(R.id.off_button, pendingIntent);
             appWidgetManager.updateAppWidget(appWidgetId, updateViews);

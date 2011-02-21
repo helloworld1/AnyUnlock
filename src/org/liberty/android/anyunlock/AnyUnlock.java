@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
+import android.telephony.*;
 import android.os.Process;
 import android.os.SystemClock;
 import android.os.Handler;
@@ -42,7 +43,7 @@ public class AnyUnlock extends Activity implements View.OnClickListener
             Toast.makeText(this, "AnyUnlock Enabled", Toast.LENGTH_SHORT).show();
             long firstTime = SystemClock.elapsedRealtime();
             am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime, 600*1000, mAlarmSender);
-            disableAdmin();
+            enableAdmin();
 
         }
         if(v == disableLockButton){
@@ -86,6 +87,32 @@ public class AnyUnlock extends Activity implements View.OnClickListener
 	    }
 	    return false;
 	}
+
+    @Override
+    public void onResume(){
+        TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        if(tm.getCallState() != 0){
+            finish();
+        }
+        super.onResume();
+    }
+
+    private void enableAdmin(){
+        Intent myIntent = new Intent(this, AdminPermissionSet.class);
+        startActivityForResult(myIntent, 18);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 18){
+            KeyguardManager km = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
+            KeyguardManager.KeyguardLock kl = km.newKeyguardLock("AnyUnlock");
+            kl.disableKeyguard();
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 
     private void disableAdmin(){

@@ -58,11 +58,6 @@ public class AnyUnlockService extends Service{
                 if(mDPM.isAdminActive(mAdminReceiver)){
                     mDPM.lockNow();
                 }
-                else{
-                    Intent myIntent = new Intent(this, AdminPermissionSet.class);
-                    myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(myIntent);
-                }
             }
         }
         return START_STICKY;
