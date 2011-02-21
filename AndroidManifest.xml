@@ -5,6 +5,7 @@
       android:versionName="1.0">
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> 
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/> 
     <application android:label="@string/app_name" android:icon="@drawable/icon">
         <activity android:name="AnyUnlock"
                   android:label="@string/app_name">
@@ -15,6 +16,10 @@
         </activity>
         <activity
             android:name=".LockScreen" />
+        <activity
+            android:name=".AdminPermissionSet" />
+        <activity
+            android:name=".SettingsScreen" />
         <service
             android:name=".AnyUnlockService" />
         <receiver android:name=".AdminReceiver"

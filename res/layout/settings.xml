@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="anyunlock_settings"
+    android:title="GlobalSettings">
+    <PreferenceCategory
+        android:title="LockScreen">
+        <CheckBoxPreference
+            android:key="enable_lock_screen"
+            android:title="Enable Lock Screen" 
+            android:defaultValue="true"
+            android:summary="Enable or disable the simple lock screen that prevent the accident key touch." />
+    </PreferenceCategory>
+</PreferenceScreen> 
