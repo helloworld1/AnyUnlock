@@ -1,0 +1,5 @@
+Compile:
+$ android update project --target [target here] --path .
+$ ant debug
+$ adb install bin/*debug*.apk
+
